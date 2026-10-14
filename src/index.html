@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <title>Noir Browser</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="renderer.js" defer></script>
+</head>
+<body>
+  <header class="chrome">
+    <div class="tab-row">
+      <div class="brand"><span class="brand-mark">N</span><span>NOIR</span></div>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Вкладки"></div>
+      <button class="icon-button new-tab" id="newTab" title="Новая вкладка (Ctrl+T)" aria-label="Новая вкладка">+</button>
+      <div class="window-actions" aria-hidden="true"><span></span><span></span><span></span></div>
+    </div>
+    <div class="toolbar">
+      <div class="nav-actions">
+        <button class="icon-button" id="backButton" title="Назад" aria-label="Назад">←</button>
+        <button class="icon-button" id="forwardButton" title="Вперёд" aria-label="Вперёд">→</button>
+        <button class="icon-button" id="reloadButton" title="Обновить" aria-label="Обновить">↻</button>
+      </div>
+      <form class="address-form" id="addressForm">
+        <span class="secure-mark" aria-hidden="true">◈</span>
+        <input id="addressInput" type="text" autocomplete="off" spellcheck="false" aria-label="Адрес или поисковый запрос" placeholder="Введите адрес или запрос">
+        <button class="address-action" id="bookmarkButton" type="button" title="Добавить в закладки" aria-label="Добавить в закладки">☆</button>
+      </form>
+      <div class="toolbar-actions">
+        <button class="icon-button" id="bookmarksButton" title="Закладки" aria-label="Закладки">▤</button>
+        <button class="icon-button" id="downloadsButton" title="Загрузки" aria-label="Загрузки">↓</button>
+        <button class="icon-button settings-button" id="settingsButton" title="Настройки" aria-label="Настройки">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="browser-area" id="browserArea">
+    <section class="home-view" id="homeView">
+      <div class="home-content">
+        <div class="home-emblem">N<span>.</span></div>
+        <p class="home-overline">YOUR SPACE ON THE WEB</p>
+        <h1>Ищи. Открывай.<br><span>Оставайся в фокусе.</span></h1>
+        <form id="homeSearchForm" class="home-search">
+          <span aria-hidden="true">⌕</span>
+          <input id="homeSearchInput" type="text" autocomplete="off" aria-label="Поиск" placeholder="Что будем искать?">
+          <button type="submit" aria-label="Искать">↵</button>
+        </form>
+        <div class="engine-switch" role="group" aria-label="Поисковая система">
+          <button class="engine-choice active" data-engine="google" type="button">Google</button>
+          <span></span>
+          <button class="engine-choice" data-engine="yandex" type="button">Яндекс</button>
+        </div>
+        <div class="quick-links" id="quickLinks">
+          <button data-url="https://www.youtube.com" type="button"><span>Y</span>YouTube</button>
+          <button data-url="https://github.com" type="button"><span>G</span>GitHub</button>
+          <button data-url="https://mail.google.com" type="button"><span>@</span>Почта</button>
+          <button id="addBookmarkShortcut" type="button"><span>+</span>Добавить</button>
+        </div>
+        <p class="home-note"><span class="adblock-indicator" id="adblockIndicator"></span><span id="homeStatus">Защита от рекламы включена</span></p>
+      </div>
+      <div class="home-footer"><span>NOIR BROWSER</span><span>ЛИЧНЫЙ ПРОСТРАНСТВО В ИНТЕРНЕТЕ</span></div>
+    </section>
+    <div class="webview-host" id="webviewHost"></div>
+  </main>
+
+  <aside class="popover hidden" id="bookmarksPopover" aria-label="Закладки">
+    <div class="popover-heading"><strong>Закладки</strong><button class="close-popover" type="button" aria-label="Закрыть">×</button></div>
+    <div id="bookmarkList" class="popover-list"></div>
+  </aside>
+
+  <section class="settings-overlay hidden" id="settingsOverlay" aria-label="Настройки">
+    <div class="settings-panel">
+      <div class="settings-heading"><div><p>NOIR BROWSER</p><h2>Настройки</h2></div><button id="closeSettings" class="icon-button" type="button" aria-label="Закрыть настройки">×</button></div>
+      <div class="settings-body">
+        <section class="setting-section">
+          <h3>Поиск</h3>
+          <label for="engineSelect">Поисковая система по умолчанию</label>
+          <select id="engineSelect"><option value="google">Google</option><option value="yandex">Яндекс</option></select>
+        </section>
+        <section class="setting-section">
+          <h3>Приватность</h3>
+          <label class="toggle-row"><span><strong>Блокировать рекламу и трекеры</strong><small>Фильтры Ghostery, обновляются при наличии доступа к сети</small></span><input id="adBlockToggle" type="checkbox"><span class="toggle"></span></label>
+        </section>
+        <section class="setting-section extension-section">
+          <div class="section-title"><div><h3>Расширения</h3><p>Только совместимые распакованные расширения Chromium.</p></div><button id="installExtension" class="secondary-button" type="button">Добавить папку</button></div>
+          <div id="extensionList" class="extension-list"><p class="empty-state">Расширения не установлены</p></div>
+        </section>
+        <section class="setting-section">
+          <h3>Загрузки</h3><button class="secondary-button" id="openDownloads" type="button">Открыть папку загрузок</button><p id="downloadStatus" class="setting-hint">Файлы сохраняются в системную папку «Загрузки».</p>
+        </section>
+        <p class="settings-footnote">Noir Browser не меняет частоту монитора и не обходит сетевые блокировки.</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

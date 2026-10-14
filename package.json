@@ -1,0 +1,46 @@
+{
+  "name": "noir-browser",
+  "version": "1.0.0",
+  "description": "A minimal monochrome browser shell for Windows 10 and 11.",
+  "main": "src/main.js",
+  "author": "Noir Browser contributors",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check src/main.js && node --check src/preload.js && node --check src/renderer.js",
+    "dist": "electron-builder --win nsis",
+    "dist:portable": "electron-builder --win portable"
+  },
+  "dependencies": {
+    "@ghostery/adblocker-electron": "2.20.1",
+    "cross-fetch": "4.1.0"
+  },
+  "devDependencies": {
+    "electron": "44.7.2",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.noirbrowser.app",
+    "productName": "Noir Browser",
+    "directories": {
+      "output": "artifacts"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "node_modules/@ghostery/**/*",
+      "node_modules/cross-fetch/**/*"
+    ],
+    "win": {
+      "target": ["nsis"],
+      "artifactName": "Noir-Browser-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
